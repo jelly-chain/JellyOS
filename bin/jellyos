@@ -61,62 +61,29 @@ function runConfig() {
 
 // ── Find @jellyos/agent binary ────────────────────────────────────────────────
 function findJellyAgent() {
-  // Prefer local install inside this project's node_modules
   const localCli = path.join(PKG_ROOT, 'node_modules', '@jellyos', 'agent', 'dist', 'cli.js');
   if (fs.existsSync(localCli)) return { bin: process.execPath, args: [localCli] };
-
-  // Fall back to globally installed jellyagent binary
   try {
     const which  = process.platform === 'win32' ? 'where' : 'which';
     const result = execFileSync(which, ['jellyagent'], { encoding: 'utf-8', stdio: ['pipe','pipe','pipe'] });
     const p = result.trim().split('\n')[0];
     if (p && fs.existsSync(p)) return { bin: p, args: [] };
   } catch { /* not in PATH */ }
-
   return null;
 }
 
 // ── Boot integrity check ──────────────────────────────────────────────────────
 function bootIntegrityCheck() {
   try {
-    // Try ts-node registration if available
     try { require('ts-node/register'); } catch {}
     const { verifyCoreIntegrity } = require('../src/core/verify-core');
     verifyCoreIntegrity(JELLY_HOME);
-  } catch { /* non-fatal — skip if core not compiled */ }
-}
-
-// ── Discover Jelly Skills in ~/.jelly/skills/ ─────────────────────────────────
-function discoverSkillArgs() {
-  const args = [];
-  const builtInSkills = ['trading', 'analysis', 'vault'];
-  // Built-in skills from project
-  for (const s of builtInSkills) {
-    const p = path.join(PKG_ROOT, 'skills', s);
-    if (fs.existsSync(p)) args.push('--skill', p);
-  }
-  // User-installed Jelly Skills from ~/.jelly/skills/
-  const userSkillsDir = path.join(JELLY_HOME, 'skills');
-  if (fs.existsSync(userSkillsDir)) {
-    try {
-      const dirs = fs.readdirSync(userSkillsDir, { withFileTypes: true })
-        .filter(d => d.isDirectory())
-        .map(d => path.join(userSkillsDir, d.name));
-      for (const skillDir of dirs) {
-        // Only add if it contains a SKILL.md (safety check)
-        if (fs.existsSync(path.join(skillDir, 'SKILL.md'))) {
-          args.push('--skill', skillDir);
-        }
-      }
-    } catch { /* ignore scan errors */ }
-  }
-  return args;
+  } catch { /* non-fatal */ }
 }
 
 // ── Launch agent via @jellyos/agent ──────────────────────────────────────────
 function runAgent() {
   bootIntegrityCheck();
-
   const agent = findJellyAgent();
   if (!agent) {
     console.error([
@@ -131,28 +98,16 @@ function runAgent() {
     ].join('\n'));
     process.exit(1);
   }
-
   const agentArgs = [
     ...agent.args,
     '--extension',  EXT_FILE,
     '--prompt',     path.join(PKG_ROOT, 'prompts', 'jellyos.md'),
     ...process.argv.slice(2),
   ];
-
   // ── Wide-char stacking fix ────────────────────────────────────────────────
-  // @jellyos/agent uses Ink (React for CLIs). Ink re-renders on every
-  // streaming token. The status bar contains wide (2-col) emoji: 🪼 🔒 ⚡
-  // that Ink's string-width counts as 1 col each. This makes Ink think each
-  // status-bar line is N cols shorter than it really is → line wraps at the
-  // real terminal edge → Ink's frame-height count is off by 1 → cursor-up
-  // lands one row short → previous frame's top border stays visible →
-  // stacking ┌────────┐ on every token.
-  //
   // COLUMNS env var is IGNORED when stdio:'inherit' attaches a real TTY.
   // process.stdout.columns reads from the TTY via ioctl, not from env.
-  // The only way to change what Ink sees is to actually shrink the TTY via
-  // `stty cols N` before spawning — that writes through ioctl so both parent
-  // and child see the reduced width.  Restore on exit.
+  // Use stty cols to actually shrink the TTY width Ink sees, then restore.
   const WIDE_CHAR_OFFSET = 6;
   const rawCols = process.stdout.columns || 120;
   const rawRows = process.stdout.rows    || 40;
@@ -165,16 +120,14 @@ function runAgent() {
     env: {
       ...process.env,
       JELLYOS_HOME: JELLY_HOME,
-      COLUMNS:     String(cols),   // belt-and-suspenders for non-TTY paths
+      COLUMNS:     String(cols),
       LINES:       String(rawRows),
       TERM:        process.env.TERM || 'xterm-256color',
       FORCE_COLOR: '3',
     },
   });
-
   child.on('error', err => { console.error(`\nFailed to start JellyOS: ${err.message}\n`); process.exit(1); });
   child.on('exit', (code, signal) => {
-    // Restore terminal width so the user's shell is back to normal
     try { execFileSync('stty', ['cols', String(rawCols)], { stdio: 'inherit' }); } catch {}
     if (signal) process.kill(process.pid, signal);
     else process.exit(code ?? 0);
@@ -188,21 +141,6 @@ async function runSetup() {
 
   console.log(`\n${CY}${BD}  JellyOS Setup Wizard${NC}\n`);
   fs.mkdirSync(JELLY_HOME, { recursive: true });
-
-  // ── Seed .env from .env.example if it doesn't exist yet ──────────────────
-  // This puts ALL variables (model selection, effect level, Telegram, Discord,
-  // webhook port, etc.) into ~/.jelly/.env so users can edit them directly.
-  // The wizard below then overwrites just the prompted keys on top.
-  const examplePath = path.join(PKG_ROOT, '.env.example');
-  if (!fs.existsSync(envPath) && fs.existsSync(examplePath)) {
-    fs.writeFileSync(envPath, fs.readFileSync(examplePath, 'utf-8'), 'utf-8');
-    try { fs.chmodSync(envPath, 0o600); } catch {}
-    console.log(`  ${GR}✓${NC} Created ${envPath} from .env.example template\n`);
-  } else if (!fs.existsSync(envPath)) {
-    // No .env.example found — create a minimal stub so writeKey works
-    fs.writeFileSync(envPath, '', 'utf-8');
-    try { fs.chmodSync(envPath, 0o600); } catch {}
-  }
 
   const rl  = readline.createInterface({ input: process.stdin, output: process.stdout });
   const ask = prompt => new Promise(res => rl.question(prompt, res));
@@ -219,6 +157,20 @@ async function runSetup() {
     fs.writeFileSync(envPath, re.test(content) ? content.replace(re, line) : content + (content.endsWith('\n') ? '' : '\n') + line + '\n');
     try { fs.chmodSync(envPath, 0o600); } catch {}
   };
+
+  // ── Seed .env from .env.example if it doesn't exist yet ──────────────────
+  // Puts ALL variables (models, effect level, Telegram, Discord, webhook port,
+  // etc.) into ~/.jelly/.env so users can edit them directly.
+  // The wizard below then overwrites just the prompted keys on top.
+  const examplePath = path.join(PKG_ROOT, '.env.example');
+  if (!fs.existsSync(envPath) && fs.existsSync(examplePath)) {
+    fs.writeFileSync(envPath, fs.readFileSync(examplePath, 'utf-8'), 'utf-8');
+    try { fs.chmodSync(envPath, 0o600); } catch {}
+    console.log(`  ${GR}✓${NC} Created ${envPath} from .env.example template\n`);
+  } else if (!fs.existsSync(envPath)) {
+    fs.writeFileSync(envPath, '', 'utf-8');
+    try { fs.chmodSync(envPath, 0o600); } catch {}
+  }
 
   // ── API Keys ──────────────────────────────────────────────────────────────
   console.log(`${BD}  API Keys${NC}`);
@@ -249,30 +201,22 @@ async function runSetup() {
   function _keccak256(data) {
     const inp = Buffer.isBuffer(data) ? data
       : Buffer.from(data instanceof Uint8Array ? data : data.replace(/^0x/,''), 'hex');
-    // Round constants [lo, hi] for Keccak-f[1600]
     const RC=[[0x00000001,0],[0x00008082,0],[0x0000808A,0x80000000],[0x80008000,0x80000000],[0x0000808B,0],[0x80000001,0],[0x80008081,0x80000000],[0x00008009,0x80000000],[0x0000008A,0],[0x00000088,0],[0x80008009,0],[0x8000000A,0],[0x8000808B,0],[0x0000008B,0x80000000],[0x00008089,0x80000000],[0x00008003,0x80000000],[0x00008002,0x80000000],[0x00000080,0x80000000],[0x0000800A,0],[0x8000000A,0x80000000],[0x80008081,0x80000000],[0x00008080,0x80000000],[0x80000001,0],[0x80008008,0x80000000]];
-    // Rotation offsets (indexed by y*5+x)
     const ROT=[0,1,62,28,27,36,44,6,55,20,3,10,43,25,39,41,45,15,21,8,18,2,61,56,14];
-    // π permutation destination (PI[i] = where lane i goes after π)
     const PI=[0,10,20,5,15,16,1,11,21,6,7,17,2,12,22,23,8,18,3,13,14,24,9,19,4];
     function r64(lo,hi,n){n&=63;if(!n)return[lo,hi];if(n===32)return[hi,lo];if(n<32)return[(lo<<n)|(hi>>>(32-n))>>>0,(hi<<n)|(lo>>>(32-n))>>>0];n-=32;return[(hi<<n)|(lo>>>(32-n))>>>0,(lo<<n)|(hi>>>(32-n))>>>0];}
     function kf(s){
       for(let r=0;r<24;r++){
-        // θ
         const C=new Uint32Array(10);
         for(let x=0;x<5;x++){C[x*2]=s[x*2]^s[(x+5)*2]^s[(x+10)*2]^s[(x+15)*2]^s[(x+20)*2];C[x*2+1]=s[x*2+1]^s[(x+5)*2+1]^s[(x+10)*2+1]^s[(x+15)*2+1]^s[(x+20)*2+1];}
         for(let x=0;x<5;x++){const[dl,dh]=r64(C[((x+1)%5)*2],C[((x+1)%5)*2+1],1);const tl=C[((x+4)%5)*2]^dl,th=C[((x+4)%5)*2+1]^dh;for(let y=0;y<5;y++){s[(y*5+x)*2]^=tl;s[(y*5+x)*2+1]^=th;}}
-        // ρ + π
         const B=new Uint32Array(50);
         for(let i=0;i<25;i++){const[rl,rh]=r64(s[i*2],s[i*2+1],ROT[i]);B[PI[i]*2]=rl;B[PI[i]*2+1]=rh;}
-        // χ
         for(let y=0;y<5;y++)for(let x=0;x<5;x++){const i=y*5+x,j=y*5+(x+1)%5,k=y*5+(x+2)%5;s[i*2]=B[i*2]^(~B[j*2]&B[k*2]);s[i*2+1]=B[i*2+1]^(~B[j*2+1]&B[k*2+1]);}
-        // ι
         s[0]^=RC[r][0];s[1]^=RC[r][1];
       }
     }
-    const RATE=136,st=new Uint32Array(50);
-    let off=0;
+    const RATE=136,st=new Uint32Array(50);let off=0;
     for(;off+RATE<=inp.length;off+=RATE){
       for(let i=0;i<17;i++){st[i*2]^=inp.readUInt32LE(off+i*8);st[i*2+1]^=inp.readUInt32LE(off+i*8+4);}
       kf(st);
@@ -320,11 +264,9 @@ async function runSetup() {
     const ecdh = crypto.createECDH('secp256k1');
     ecdh.generateKeys();
     const privHex  = ecdh.getPrivateKey('hex');
-    const pubBytes = ecdh.getPublicKey().slice(1); // uncompressed, drop 0x04 prefix
-    // keccak256 of public key → last 20 bytes = address
-    const hashHex  = _keccak256(pubBytes).slice(2); // strip 0x
+    const pubBytes = ecdh.getPublicKey().slice(1);
+    const hashHex  = _keccak256(pubBytes).slice(2);
     const addrRaw  = hashHex.slice(-40);
-    // EIP-55 checksum
     const addrHash = _keccak256(Buffer.from(addrRaw, 'utf-8')).slice(2);
     const address  = '0x' + [...addrRaw].map((c, i) => parseInt(addrHash[i], 16) >= 8 ? c.toUpperCase() : c).join('');
     return { chain: 'evm', address, privateKey: '0x' + privHex };
@@ -337,7 +279,6 @@ async function runSetup() {
       const kp = Keypair.generate();
       return { chain: 'solana', address: kp.publicKey.toBase58(), privateKey: Buffer.from(kp.secretKey).toString('hex') };
     } catch {
-      // Fallback: pure Node ed25519 keypair
       const { publicKey, privateKey } = crypto.generateKeyPairSync('ed25519');
       const pub = publicKey.export({ type: 'spki', format: 'der' }).slice(-32);
       return { chain: 'solana', address: base58Encode(pub), privateKey: privateKey.export({ type: 'pkcs8', format: 'der' }).toString('hex') };
@@ -366,13 +307,12 @@ async function runSetup() {
   if (fs.existsSync(vaultAddrFile)) {
     console.log(`  ${GY}→ Cold vault keys already present — skipped${NC}\n`);
   } else {
-    const vaultDir = path.join(JELLY_HOME, 'vault-keys');
     const vEVM    = genEVM();
     const vSol    = genSolana();
     const vCosmos = genCosmos();
 
     // Show PRIVATE KEYS — user must write these down. They are NEVER saved to disk.
-    const OR = '\x1b[38;5;214m'; // orange
+    const OR = '\x1b[38;5;214m';
     console.log(`\n${OR}${BD}  ┌─────────────────────────────────────────────────────────┐${NC}`);
     console.log(`${OR}${BD}  │  ⚠  COLD VAULT — WRITE DOWN YOUR PRIVATE KEYS NOW      │${NC}`);
     console.log(`${OR}${BD}  │     They will NOT be shown again and NOT saved to disk.  │${NC}`);
@@ -389,7 +329,6 @@ async function runSetup() {
     console.log(`  ${GY}The agent can send profits TO these addresses but CANNOT withdraw.${NC}`);
     console.log(`  ${GY}Only you can move funds using the private keys you write down above.${NC}\n`);
 
-    // ── Confirmation gate — must type "YES" to continue ───────────────────
     const rl2 = readline.createInterface({ input: process.stdin, output: process.stdout });
     const confirm = await new Promise(res => rl2.question(
       `${OR}${BD}  Have you written down ALL private keys above? Type YES to continue: ${NC}`,
@@ -424,7 +363,6 @@ async function runSetup() {
     saveWallet(wEVM,    walletsDir);
     saveWallet(wSol,    walletsDir);
     saveWallet(wCosmos, walletsDir);
-
     console.log(`\n  ${GR}✓${NC} Trading wallets saved to ${walletsDir}/`);
     console.log(`  ${GY}  evm     ${NC} ${wEVM.address}`);
     console.log(`  ${GY}  solana  ${NC} ${wSol.address}`);

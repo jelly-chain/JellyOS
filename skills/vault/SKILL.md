@@ -37,3 +37,4 @@ First-time vault creation: the user must set a passphrase. This passphrase is th
 - Encryption: AES-256-GCM with scrypt KDF (N=16384, r=8, p=1)
 - Storage: `~/.jelly/vault/profits.vault` (gitignored)
 - The vault file is safe to back up — it is encrypted at rest
+no 
