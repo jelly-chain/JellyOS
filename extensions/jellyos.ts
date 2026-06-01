@@ -23,6 +23,7 @@ import { VaultManager } from "../src/vault/VaultManager";
 import { AutoVault } from "../src/vault/AutoVault";
 import { FeedManager } from "../src/feeds/FeedManager";
 import { SignalEngine } from "../src/feeds/SignalEngine";
+import { loadSkills } from "../scripts/load-skills";
 
 // -- Constants ----------------------------------------------------------------
 
@@ -405,16 +406,23 @@ export default function jellyos(agent: ExtensionAPI): void {
       autoVault = new AutoVault(vault);
 
       // Start auto-vault: uses portfolio PnL from PositionManager if available
-      let getPnL = (): number => 0;
+      // Shared PositionManager instance — autoVault AND trade tools reference the same one.
+      // This fixes the bug where autoVault created a separate PositionManager with zero positions.
+      let positionManager: any = null;
       try {
         const { PositionManager } = require("../src/trading/PositionManager");
         const { Metrics }         = require("../src/core/utils/Metrics");
         const { Logger }          = require("../src/core/utils/Logger");
-        const pm = new PositionManager(new Metrics(new Logger("AutoVault")));
-        getPnL = () => {
-          try { return pm.getTotalPnL?.() ?? 0; } catch { return 0; }
-        };
-      } catch { /* PositionManager unavailable, PnL stays 0 */ }
+        positionManager = new PositionManager(new Metrics(new Logger("Trading")));
+      } catch { /* PositionManager unavailable */ }
+
+      let getPnL = (): number => {
+        if (positionManager) {
+          try { return positionManager.getTotalPnL?.() ?? 0; } catch { return 0; }
+        }
+        // Fallback: use signal engine's net directional score
+        return signals?.getNetPnL() ?? 0;
+      };
 
       autoVault.start(getPnL, (amount) => {
         broadcastWs("vault_sweep", { amount, ts: Date.now() });
@@ -431,6 +439,17 @@ export default function jellyos(agent: ExtensionAPI): void {
       // agent TUI re-render -- calling it mid-init stacks +----------+ borders.
 
       try { feeds.start(); } catch { /* feed errors are non-fatal */ }
+
+      // -- Load skills from /skills directory (zero context cost) -----------
+      // Skills are registered as reference-only; the agent accesses them by
+      // name. Content lives in /skills/*.md and is never injected into prompts.
+      try {
+        const skillCount = loadSkills(agent);
+        // setStatus deferred to avoid TUI re-render during boot
+        if (skillCount > 0) {
+          setTimeout(() => ctx.ui.setStatus("skills", `${skillCount} skills`), 2000);
+        }
+      } catch { /* skill loading is non-fatal */ }
 
       // Start framework-level feeds (price tickers, news sentiment)
       try {

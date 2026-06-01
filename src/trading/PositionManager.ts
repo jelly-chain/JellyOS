@@ -140,15 +140,28 @@ export class PositionManager {
     const open = this.getOpenPositions();
     const totalUnrealized = open.reduce((s, p) => s + p.unrealizedPnL, 0);
     const totalRealized = this.closedPositions.reduce((s, p) => s + p.realizedPnL, 0);
+    const totalValue = open.reduce((s, p) => s + p.currentPrice * p.quantity, 0);
     const wins = this.closedPositions.filter(p => p.realizedPnL > 0).length;
     const losses = this.closedPositions.filter(p => p.realizedPnL < 0).length;
 
     return {
       openPositions: open.length, closedPositions: this.closedPositions.length,
       totalUnrealizedPnL: totalUnrealized, totalRealizedPnL: totalRealized,
+      totalValue, totalPnL: totalRealized + totalUnrealized,
       winRate: wins + losses > 0 ? wins / (wins + losses) : 0, wins, losses,
       totalFees: this.closedPositions.reduce((s, p) => s + p.fees, 0),
     };
+  }
+
+  /** Total realized + unrealized PnL — used by AutoVault for sweep decisions */
+  getTotalPnL(): number {
+    const stats = this.getStats();
+    return stats.totalPnL;
+  }
+
+  /** Total portfolio value from open positions */
+  getTotalValue(): number {
+    return this.getOpenPositions().reduce((s, p) => s + p.currentPrice * p.quantity * p.leverage, 0);
   }
 
   close(): void {

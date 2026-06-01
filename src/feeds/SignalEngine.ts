@@ -1,5 +1,6 @@
 import { FeedManager, FeedItem } from './FeedManager';
 import { Logger } from '../core/utils/Logger';
+import { EventEmitter } from 'events';
 
 export interface TradingSignal {
   id: string;
@@ -16,13 +17,14 @@ export interface TradingSignal {
   confidence: number;
 }
 
-export class SignalEngine {
+export class SignalEngine extends EventEmitter {
   private feeds: FeedManager;
   private logger: Logger;
   private signals: TradingSignal[] = [];
   private maxSignals = 50;
 
   constructor(feeds: FeedManager) {
+    super();
     this.feeds = feeds;
     this.logger = new Logger('SignalEngine');
 
@@ -38,8 +40,15 @@ export class SignalEngine {
         if (this.signals.length > this.maxSignals) {
           this.signals = this.signals.slice(0, this.maxSignals);
         }
+        // Broadcast to dashboard if connected
+        this.emitSignal(signal);
       }
     } catch { /* ignore */ }
+  }
+
+  private emitSignal(signal: TradingSignal): void {
+    // Emit locally for subscribers (e.g., dashboard bridge)
+    this.emit('signal_generated', signal);
   }
 
   private extractSignal(item: FeedItem): TradingSignal | null {
