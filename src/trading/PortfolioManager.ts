@@ -17,6 +17,10 @@ export interface PortfolioSummary {
     monthlyReturn: number;
     sharpeRatio: number;
     maxDrawdown: number;
+    winRate: number;
+    avgWin: number;
+    avgLoss: number;
+    profitFactor: number;
   };
   timestamp: number;
 }
@@ -82,8 +86,9 @@ export class PortfolioManager {
       positions: positions.length, diversification, concentration,
       exposure: { long: longExposure, short: shortExposure, net: longExposure - shortExposure },
       performance: {
-        totalReturn, dailyReturn: totalReturn / 365, weeklyReturn: totalReturn / 52,
-        monthlyReturn: totalReturn / 12, sharpeRatio: totalReturn > 0 ? 0.5 : 0, maxDrawdown: 0,
+        totalReturn, dailyReturn: 0, weeklyReturn: 0,
+        monthlyReturn: 0, sharpeRatio: 0, maxDrawdown: 0,
+        winRate, avgWin, avgLoss, profitFactor: avgLoss > 0 ? avgWin / avgLoss : (avgWin > 0 ? Infinity : 0),
       },
       timestamp: Date.now(),
     };

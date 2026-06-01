@@ -11,7 +11,20 @@ export class AutoVault {
   constructor(vault: VaultManager) {
     this.vault = vault;
     this.logger = new Logger('AutoVault');
-    this.threshold = parseFloat(process.env.AUTO_VAULT_THRESHOLD || '500');
+    // Read threshold from context.json first (set via /schedule command), then env, then $500
+    this.threshold = this.readThreshold();
+  }
+
+  private readThreshold(): number {
+    try {
+      const { existsSync, readFileSync } = require('fs');
+      const ctxPath = require('path').resolve(require('os').homedir(), '.jelly', 'context.json');
+      if (existsSync(ctxPath)) {
+        const ctx = JSON.parse(readFileSync(ctxPath, 'utf-8'));
+        if (ctx.auto_vault_threshold != null) return Number(ctx.auto_vault_threshold);
+      }
+    } catch { /* fall through */ }
+    return parseFloat(process.env.AUTO_VAULT_THRESHOLD || '500');
   }
 
   start(getPnL: () => number, onSweep?: (amount: number) => void): void {

@@ -440,6 +440,18 @@ export default function jellyos(agent: ExtensionAPI): void {
 
       try { feeds.start(); } catch { /* feed errors are non-fatal */ }
 
+      // -- Wire SignalEngine → dashboard bridge --------------------------
+      // SignalEngine extends EventEmitter now — every generated signal
+      // fires 'signal_generated'. Broadcast to dashboard WebSocket clients.
+      signals.on('signal_generated', (sig: any) => {
+        broadcastWs("signal_update", {
+          id: sig.id, asset: sig.asset, direction: sig.direction,
+          strength: sig.strength, confidence: sig.confidence,
+          rationale: sig.rationale?.slice(0, 120) ?? '',
+          timestamp: sig.timestamp,
+        });
+      });
+
       // -- Load skills from /skills directory (zero context cost) -----------
       // Skills are registered as reference-only; the agent accesses them by
       // name. Content lives in /skills/*.md and is never injected into prompts.
@@ -463,8 +475,16 @@ export default function jellyos(agent: ExtensionAPI): void {
         ctx.ui.setStatus("models", `${modelRegistry.modelCount} models`);
       }, 2000);
 
-      // Wire dashboard status
+      // Wire dashboard status — with service health map for /health command
       _statusReady = true; _statusV = vault; _statusF = feeds; _statusS = signals; _statusW = wallet;
+      (_statusAny as any)._positionManager = positionManager;
+      const serviceHealth = new Map<string, 'ok' | 'degraded' | 'down'>();
+      serviceHealth.set('vault', vault ? 'ok' : 'down');
+      serviceHealth.set('feeds', feeds ? 'ok' : 'down');
+      serviceHealth.set('signals', signals ? 'ok' : 'down');
+      serviceHealth.set('wallet', wallet ? 'ok' : 'down');
+      serviceHealth.set('dashboard_ws', 'ok');
+      (_statusAny as any).serviceHealth = serviceHealth;
 
       // Start background bridges (no setStatus calls here -- deferred below)
       if (process.env.TELEGRAM_BOT_TOKEN) {
@@ -2891,6 +2911,22 @@ export default function jellyos(agent: ExtensionAPI): void {
       if (!args.trim()) { ctx.ui.notify("Usage: /arb <symbol> -- e.g. /arb ETH"); return; }
       // Delegate to agent via tool
       ctx.ui.notify(`Scanning arbitrage for ${args.trim().toUpperCase()}...\nAsk the agent: "scan arbitrage for ${args.trim()}"`);
+    },
+  });
+
+  agent.registerCommand("health", {
+    description: "Show service health status — vault, feeds, signals, wallet, dashboard",
+    async handler(_args, ctx) {
+      const h = _statusAny?.serviceHealth as Map<string, string> | undefined;
+      if (!h) { ctx.ui.notify("Health data not available — services still booting"); return; }
+      const lines: string[] = ["SERVICE HEALTH", "─────────────"];
+      for (const [svc, status] of h) {
+        const icon = status === 'ok' ? '🟢' : status === 'degraded' ? '🟡' : '🔴';
+        lines.push(`  ${icon} ${svc.padEnd(16)} ${status.toUpperCase()}`);
+      }
+      const mem = `${(process.memoryUsage().rss / 1e6).toFixed(0)}MB`;
+      lines.push(`\n  🟢 node         ${process.version} (${mem})`);
+      ctx.ui.notify(lines.join("\n"));
     },
   });
 
