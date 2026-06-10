@@ -1,0 +1,68 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+
+# Bundle output
+extensions/jellyos.mjs
+
+# Environment files (user-specific)
+.env
+.env.local
+.env.production.local
+
+# Logs
+logs/
+*.log
+
+# Data directories (user-specific)
+data/
+wallets/
+vault/
+*.vault
+tmp/
+sessions/
+cache/
+
+# Runtime user data (never commit)
+context.json
+vault-addresses.json
+alerts.json
+watched-wallets.json
+journal/
+snapshots/
+
+# Internal / local dev artifacts
+.local/
+.idea/
+.vscode/
+*.code-workspace
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Testing
+coverage/
+.nyc_output/
+
+# Runtime data
+.pid
+
+# Lock files — commit these for reproducible builds
+# package-lock.json  ← committed for prod consistency
+
+# Solana test ledger (large binary artifacts)
+test-ledger/
+
+# Dashboard build
+dashboard/dist/
+dashboard/node_modules/
+
+# Temp files
+*.tmp
+*.swp
+*.swo
+*~
