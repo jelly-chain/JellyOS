@@ -4,8 +4,6 @@ description: Liquidation cascade hunting with alert monitoring and trading signa
 author: Tentacle OS
 version: 2.0.0
 category: trading
-dependencies:
-  - @jellyos/agent
 ---
 
 # Liquidation Hunter

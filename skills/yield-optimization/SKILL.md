@@ -4,8 +4,6 @@ description: Optimize DeFi yield across protocols with risk scoring and imperman
 author: Tentacle OS
 version: 2.0.0
 category: defi
-dependencies:
-  - @jellyos/agent
 ---
 
 # Yield Optimization Engine

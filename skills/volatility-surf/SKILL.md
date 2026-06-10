@@ -4,8 +4,6 @@ description: Trade volatility regimes using IV rank, term structure, and volatil
 author: Tentacle OS
 version: 2.0.0
 category: trading
-dependencies:
-  - @jellyos/agent
 ---
 
 # Volatility Surfer

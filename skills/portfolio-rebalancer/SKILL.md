@@ -4,8 +4,6 @@ description: Automated portfolio rebalancing across assets and chains with drift
 author: Tentacle OS
 version: 2.0.0
 category: portfolio
-dependencies:
-  - @jellyos/agent
 ---
 
 # Portfolio Rebalancer

@@ -4,9 +4,6 @@ description: Deep on-chain analytics including whale tracking, contract events, 
 author: Tentacle OS
 version: 2.0.0
 category: blockchain
-dependencies:
-  - @jellyos/agent
-  - @solana/web3.js
 ---
 
 # OnChain Analysis Engine

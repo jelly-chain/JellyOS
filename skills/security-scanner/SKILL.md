@@ -4,8 +4,6 @@ description: Security auditing for tokens and contracts with honeypot detection,
 author: Tentacle OS
 version: 2.0.0
 category: security
-dependencies:
-  - @jellyos/agent
 ---
 
 # Security Scanner

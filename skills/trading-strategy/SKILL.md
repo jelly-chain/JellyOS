@@ -4,9 +4,6 @@ description: Advanced trading strategies with technical indicators, backtesting,
 author: Tentacle OS
 version: 2.0.0
 category: trading
-dependencies:
-  - @jellyos/agent
-  - technicalindicators
 ---
 
 # Trading Strategy Engine

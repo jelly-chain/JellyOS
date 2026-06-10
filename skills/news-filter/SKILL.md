@@ -4,8 +4,6 @@ description: Real-time news filtering with impact scoring, sentiment analysis, a
 author: Tentacle OS
 version: 2.0.0
 category: data
-dependencies:
-  - @jellyos/agent
 ---
 
 # News Filter

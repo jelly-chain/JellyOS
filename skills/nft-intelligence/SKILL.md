@@ -4,8 +4,6 @@ description: NFT collection analysis with rarity scoring, wash-trade detection, 
 author: Tentacle OS
 version: 2.0.0
 category: nft
-dependencies:
-  - @jellyos/agent
 ---
 
 # NFT Intelligence

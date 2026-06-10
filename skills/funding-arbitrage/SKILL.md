@@ -4,8 +4,6 @@ description: Perpetual funding rate arbitrage with cross-exchange rate compariso
 author: Tentacle OS
 version: 2.0.0
 category: trading
-dependencies:
-  - @jellyos/agent
 ---
 
 # Funding Arbitrage

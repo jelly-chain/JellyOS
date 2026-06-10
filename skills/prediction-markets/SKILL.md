@@ -4,8 +4,6 @@ description: Trade prediction markets across Polymarket, Kalshi, and predict.fun
 author: Tentacle OS
 version: 2.0.0
 category: prediction
-dependencies:
-  - @jellyos/agent
 ---
 
 # Prediction Markets Engine

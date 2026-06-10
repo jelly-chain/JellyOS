@@ -4,8 +4,6 @@ description: Optimal gas timing with price prediction and transaction scheduling
 author: Tentacle OS
 version: 2.0.0
 category: blockchain
-dependencies:
-  - @jellyos/agent
 ---
 
 # Gas Sniper

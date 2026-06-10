@@ -4,8 +4,6 @@ description: Cross-chain bridge aggregator with fee estimation, route optimizati
 author: Tentacle OS
 version: 2.0.0
 category: bridge
-dependencies:
-  - @jellyos/agent
 ---
 
 # Bridge Explorer

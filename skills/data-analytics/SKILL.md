@@ -4,8 +4,6 @@ description: Multi-source data analytics including sentiment analysis, pattern r
 author: Tentacle OS
 version: 2.0.0
 category: analytics
-dependencies:
-  - @jellyos/agent
 ---
 
 # Data Analytics Engine

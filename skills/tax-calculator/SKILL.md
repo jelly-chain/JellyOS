@@ -4,8 +4,6 @@ description: Crypto tax calculation with FIFO/LIFO tracking, gain/loss reporting
 author: Tentacle OS
 version: 2.0.0
 category: finance
-dependencies:
-  - @jellyos/agent
 ---
 
 # Tax Calculator

@@ -4,8 +4,6 @@ description: Local machine automation with scheduling, alerts, webhooks, and sys
 author: Tentacle OS
 version: 2.0.0
 category: system
-dependencies:
-  - @jellyos/agent
 ---
 
 # Automation Engine
