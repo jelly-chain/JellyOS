@@ -1,5 +1,5 @@
 ---
-name: onchain-analysis
+name: onchain
 description: On-chain analytics and blockchain data analysis
 author: Tentacle OS
 version: 2.0.0
