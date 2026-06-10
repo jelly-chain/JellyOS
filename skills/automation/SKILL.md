@@ -1,49 +1,37 @@
 ---
-name: auto-trader
-description: Scheduled tasks, auto-vault sweeps, recurring analysis, and cron-based automation
+name: automation
+description: Local machine automation with scheduling, alerts, webhooks, and system monitoring
+author: Tentacle OS
+version: 2.0.0
+category: system
+dependencies:
+  - @jellyos/agent
 ---
 
 # Automation Engine
 
-Schedule recurring tasks, auto-sweep vault profits, and run automated analysis pipelines.
+Local machine automation including task scheduling, alert triggers, webhook handling, and system monitoring.
 
-## Scheduled Tasks
+## Capabilities
 
-Use `schedule_task` to set up recurring analysis:
+- **Task Scheduler**: Cron-like scheduling with crontab integration
+- **Price Alerts**: Multi-condition price alerts with notifications
+- **Webhook Server**: HTTP server for external integrations
+- **File Monitor**: Watch files for changes and trigger actions
+- **Script Runner**: Execute shell scripts with output capture
+- **System Stats**: Resource monitoring and performance tracking
 
-```text
-schedule_task "Check BTC funding rates every 4 hours"
-schedule_task "Sweep profits if vault balance > $500"
-schedule_task "Run daily DeFi TVL report at 08:00 UTC"
-```
+## Alert Conditions
 
-Tasks are stored in `~/.jelly/context.json` under the `schedule` key. The agent runs each active task at the start of every turn, so task frequency depends on interaction frequency.
+- Price above/below threshold
+- TX confirmation (whale moves, contract events)
+- Time-based triggers (daily reports, weekly scans)
+- File changes (new logs, updated configs)
 
-## Auto-Vault
+## Commands
 
-`auto_vault_threshold` in context.json sets the dollar threshold for auto-sweeping. When portfolio PnL exceeds this threshold, profits are automatically swept to the vault.
-
-```text
-/set auto_vault_threshold 500  — auto-sweep at $500 profit
-/set auto_vault_threshold 0    — disable auto-sweep
-```
-
-## Alert Sweep
-
-`set_alert` creates persistent price alerts that fire even across sessions. Configure once, monitor forever — alerts are stored in `~/.jelly/alerts.json`.
-
-## Context Persistence
-
-JellyOS persists configuration across restarts in `~/.jelly/context.json`:
-- `effect_level` — trading intensity (eco/normal/turbo/max)
-- `active_chain` — default chain for queries
-- `watchlist` — tracked assets
-- `risk_profile` — risk tolerance settings
-- `schedule` — recurring tasks
-
-## Scheduling Best Practices
-
-- Keep tasks idempotent — they may run multiple times
-- Use descriptive task names for audit trail visibility
-- Don't schedule price checks more than every 30 minutes
-- Combine multiple checks into a single task where possible
+- `/task schedule <cron> <action>` — schedule recurring task
+- `/alert add <symbol> <condition> <value>` — add price alert
+- `/script run <path>` — execute shell script
+- `/webhook <port>` — start webhook server
+- `/monitor start` — start system monitoring
