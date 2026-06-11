@@ -1,0 +1,24 @@
+// AavePosition - Main implementation
+// Author: Tentacle OS
+// Version: 2.0.0
+
+import { Logger } from '../../../src/core/utils/Logger';
+import { Metrics } from '../../../src/core/utils/Metrics';
+
+const logger = new Logger('aave-position');
+const metrics = new Metrics();
+
+export class AavePosition {
+  async execute(params: any): Promise<any> {
+    metrics.increment('aave-position.executed', 1);
+    return { success: true, data: params };
+  }
+  
+  close(): void {}
+}
+
+export { createAavePosition } from './factory';
+
+export function createAavePosition(): AavePosition {
+  return new AavePosition();
+}
