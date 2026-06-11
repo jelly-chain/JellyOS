@@ -1,4 +1,4 @@
----
+owl---
 name: security-scanner
 description: Security auditing for tokens and contracts with honeypot detection, rug pull analysis, and risk scoring
 author: Tentacle OS
@@ -17,3 +17,7 @@ Audit tokens and contracts for security risks including honeypot detection, rug 
 - **Audit Verification**: Contract audit status and report links
 - **Risk Scoring**: Numerical risk score from multiple factors
 - **Sanctions Check**: OFAC and known malicious address screening
+
+
+
+
