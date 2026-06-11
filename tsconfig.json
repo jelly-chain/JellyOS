@@ -1,34 +1,22 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "module": "commonjs",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "lib": ["ES2022"],
     "outDir": "./dist",
     "rootDir": "./src",
-    "strict": true,
-    "noImplicitAny": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "ignoreDeprecations": "6.0",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "jsx": "react-jsx",
+    "resolveJsonModule": true,
+    "forceConsistentCasingInFileNames": true,
     "types": ["node"]
   },
-  "include": [
-    "src/core/**/*",
-    "src/feeds/**/*",
-    "src/vault/**/*",
-    "src/wallet/**/*",
-    "src/blockchain/**/*",
-    "src/trading/**/*",
-    "src/context/**/*",
-    "src/test/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist"
-  ]
+  "include": ["src/**/*", "src/**/*.tsx"],
+  "exclude": ["node_modules", "dist", "src/tests/**"]
 }
