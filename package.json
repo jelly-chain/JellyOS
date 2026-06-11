@@ -1,48 +1,58 @@
 {
-  "name": "@jellyos/pi-package",
-  "version": "2.0.0",
-  "description": "JellyOS — AI blockchain analytics and trading agent (standalone, Pi-free)",
-  "keywords": [
-    "blockchain",
-    "trading",
-    "ai",
-    "defi",
-    "crypto",
-    "agent",
-    "jelly"
-  ],
-  "bin": {
-    "jellyos": "./bin/jellyos",
-    "jelly": "./bin/jellyos"
-  },
-  "author": "JellyOS Team",
+  "name": "@jellyos/agent",
+  "version": "0.2.1",
+  "description": "JellyOS — standalone AI trading agent. Runs locally, no server required.",
+  "author": ["JellyOS Team", "Auther Bsc Admin"],
   "license": "MIT",
+  "type": "module",
+  "main": "./dist/Index.js",
+  "types": "./dist/Index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/Index.js",
+      "types": "./dist/Index.d.ts"
+    }
+  },
+  "bin": {
+    "jellyos": "./bin/jellyagent",
+    "jellyagent": "./bin/jellyagent",
+    "jellyos-mcp": "./bin/jellyos-mcp"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "npx tsc",
+    "build:watch": "tsc --watch",
+    "dev": "tsx src/cli.ts",
+    "start": "node dist/cli.js",
+    "type-check": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@sinclair/typebox": "^0.32.0",
+    "chalk": "^5.3.0",
+    "dotenv": "^16.4.5",
+    "ink": "^5.0.1",
+    "ink-text-input": "^6.0.0",
+    "react": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.41",
+    "@types/react": "^18.3.29",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.7"
+  },
   "engines": {
     "node": ">=20.0.0"
   },
-  "scripts": {
-    "start": "node bin/jellyos",
-    "setup": "bash setup.sh",
-    "build": "tsc --project tsconfig.json",
-    "type-check": "tsc --noEmit --skipLibCheck"
-  },
-  "dependencies": {
-    "@jellyos/agent": "^0.2.0",
-    "@solana/web3.js": "^1.98.4",
-    "argon2": "^0.44.0",
-    "ethers": "^6.0.0"
-  },
-  "overrides": {
-    "ws": "8.21.0",
-    "uuid": "14.0.0"
-  },
-  "devDependencies": {
-    "@types/node": "^25.9.1",
-    "@types/ws": "^8.5.13",
-    "@typescript-eslint/eslint-plugin": "^8.60.0",
-    "@typescript-eslint/parser": "^8.60.0",
-    "esbuild": "^0.28.0",
-    "eslint": "^10.4.0",
-    "typescript": "^6.0.3"
-  }
+  "keywords": [
+    "ai",
+    "agent",
+    "trading",
+    "blockchain",
+    "terminal",
+    "cli",
+    "jellyos"
+  ]
 }
