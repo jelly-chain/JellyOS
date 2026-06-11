@@ -1,6 +1,6 @@
 {
   "name": "jellyos-dashboard",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "JellyOS local React dashboard",
   "private": true,
   "type": "module",
