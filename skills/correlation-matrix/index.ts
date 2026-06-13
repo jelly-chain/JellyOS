@@ -110,8 +110,6 @@ export class CorrelationMatrixAnalyzer {
 }
 
 export * from './types/CorrelationTypes';
-export { createCorrelationMatrixAnalyzer } from './factory';
 
-export function createCorrelationMatrixAnalyzer(): CorrelationMatrixAnalyzer {
-  return new CorrelationMatrixAnalyzer();
-}
+
+export { createCorrelationMatrixAnalyzer } from './factory';

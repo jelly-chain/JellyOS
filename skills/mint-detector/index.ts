@@ -18,7 +18,3 @@ export class MintDetector {
 }
 
 export { createMintDetector } from './factory';
-
-export function createMintDetector(): MintDetector {
-  return new MintDetector();
-}

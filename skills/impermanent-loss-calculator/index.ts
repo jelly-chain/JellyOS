@@ -66,8 +66,6 @@ export class ImpermanentLossCalculator {
 }
 
 export * from './types/ILTypes';
-export { createILCalculator } from './factory';
 
-export function createILCalculator(): ImpermanentLossCalculator {
-  return new ImpermanentLossCalculator();
-}
+
+export { createImpermanentLossCalculator } from './factory';

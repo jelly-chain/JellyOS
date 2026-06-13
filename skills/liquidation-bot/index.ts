@@ -18,7 +18,3 @@ export class LiquidationBot {
 }
 
 export { createLiquidationBot } from './factory';
-
-export function createLiquidationBot(): LiquidationBot {
-  return new LiquidationBot();
-}

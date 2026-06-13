@@ -18,7 +18,3 @@ export class YieldOptimizer {
 }
 
 export { createYieldOptimizer } from './factory';
-
-export function createYieldOptimizer(): YieldOptimizer {
-  return new YieldOptimizer();
-}

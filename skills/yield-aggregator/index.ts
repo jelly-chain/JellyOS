@@ -102,8 +102,6 @@ export class YieldAggregator {
 }
 
 export * from './types/YieldAggregatorTypes';
-export { createYieldAggregator } from './factory';
 
-export function createYieldAggregator(): YieldAggregator {
-  return new YieldAggregator();
-}
+
+export { createYieldAggregator } from './factory';

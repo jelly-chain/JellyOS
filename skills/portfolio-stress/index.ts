@@ -18,7 +18,3 @@ export class PortfolioStress {
 }
 
 export { createPortfolioStress } from './factory';
-
-export function createPortfolioStress(): PortfolioStress {
-  return new PortfolioStress();
-}

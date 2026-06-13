@@ -18,7 +18,3 @@ export class NftSniper {
 }
 
 export { createNftSniper } from './factory';
-
-export function createNftSniper(): NftSniper {
-  return new NftSniper();
-}

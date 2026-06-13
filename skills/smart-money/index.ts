@@ -101,8 +101,6 @@ export class SmartMoneyTracker {
 }
 
 export * from './types/SmartMoneyTypes';
-export { createSmartMoneyTracker } from './factory';
 
-export function createSmartMoneyTracker(): SmartMoneyTracker {
-  return new SmartMoneyTracker();
-}
+
+export { createSmartMoneyTracker } from './factory';

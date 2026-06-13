@@ -18,7 +18,3 @@ export class FeeArbitrage {
 }
 
 export { createFeeArbitrage } from './factory';
-
-export function createFeeArbitrage(): FeeArbitrage {
-  return new FeeArbitrage();
-}

@@ -81,8 +81,6 @@ export class GapFiller {
 }
 
 export * from './types/GapTypes';
-export { createGapFiller } from './factory';
 
-export function createGapFiller(): GapFiller {
-  return new GapFiller();
-}
+
+export { createGapFiller } from './factory';

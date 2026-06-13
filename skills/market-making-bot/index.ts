@@ -18,7 +18,3 @@ export class MarketMakingBot {
 }
 
 export { createMarketMakingBot } from './factory';
-
-export function createMarketMakingBot(): MarketMakingBot {
-  return new MarketMakingBot();
-}

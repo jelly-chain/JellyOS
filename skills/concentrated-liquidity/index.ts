@@ -18,7 +18,3 @@ export class ConcentratedLiquidity {
 }
 
 export { createConcentratedLiquidity } from './factory';
-
-export function createConcentratedLiquidity(): ConcentratedLiquidity {
-  return new ConcentratedLiquidity();
-}

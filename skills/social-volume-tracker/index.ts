@@ -70,8 +70,6 @@ export class SocialVolumeTracker {
 }
 
 export * from './types/SocialVolumeTypes';
-export { createSocialVolumeTracker } from './factory';
 
-export function createSocialVolumeTracker(): SocialVolumeTracker {
-  return new SocialVolumeTracker();
-}
+
+export { createSocialVolumeTracker } from './factory';

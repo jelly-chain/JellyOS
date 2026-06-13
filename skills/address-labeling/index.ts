@@ -67,8 +67,6 @@ export class AddressLabeler {
 }
 
 export * from './types/AddressLabelingTypes';
-export { createAddressLabeler } from './factory';
 
-export function createAddressLabeler(): AddressLabeler {
-  return new AddressLabeler();
-}
+
+export { createAddressLabeler } from './factory';

@@ -18,7 +18,3 @@ export class CorrelationArb {
 }
 
 export { createCorrelationArb } from './factory';
-
-export function createCorrelationArb(): CorrelationArb {
-  return new CorrelationArb();
-}

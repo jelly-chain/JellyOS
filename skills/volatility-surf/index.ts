@@ -138,8 +138,6 @@ export class VolatilitySurfer {
 }
 
 export * from './types/VolatilityTypes';
-export { createVolatilitySurfer } from './factory';
 
-export function createVolatilitySurfer(): VolatilitySurfer {
-  return new VolatilitySurfer();
-}
+
+export { createVolatilitySurfer } from './factory';

@@ -18,7 +18,3 @@ export class LiquidityMining {
 }
 
 export { createLiquidityMining } from './factory';
-
-export function createLiquidityMining(): LiquidityMining {
-  return new LiquidityMining();
-}

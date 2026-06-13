@@ -81,8 +81,6 @@ export class NewsCatalyst {
 }
 
 export * from './types/NewsTypes';
-export { createNewsCatalyst } from './factory';
 
-export function createNewsCatalyst(): NewsCatalyst {
-  return new NewsCatalyst();
-}
+
+export { createNewsCatalyst } from './factory';

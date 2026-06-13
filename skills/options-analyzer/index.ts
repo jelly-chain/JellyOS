@@ -130,8 +130,6 @@ export class OptionsAnalyzer {
 }
 
 export * from './types/OptionsTypes';
-export { createOptionsAnalyzer } from './factory';
 
-export function createOptionsAnalyzer(): OptionsAnalyzer {
-  return new OptionsAnalyzer();
-}
+
+export { createOptionsAnalyzer } from './factory';

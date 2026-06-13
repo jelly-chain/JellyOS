@@ -75,8 +75,6 @@ export class MinerPositioning {
 }
 
 export * from './types/MinerTypes';
-export { createMinerPositioning } from './factory';
 
-export function createMinerPositioning(): MinerPositioning {
-  return new MinerPositioning();
-}
+
+export { createMinerPositioning } from './factory';

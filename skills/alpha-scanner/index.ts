@@ -18,7 +18,3 @@ export class AlphaScanner {
 }
 
 export { createAlphaScanner } from './factory';
-
-export function createAlphaScanner(): AlphaScanner {
-  return new AlphaScanner();
-}

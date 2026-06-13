@@ -18,7 +18,3 @@ export class MetricsExporter {
 }
 
 export { createMetricsExporter } from './factory';
-
-export function createMetricsExporter(): MetricsExporter {
-  return new MetricsExporter();
-}

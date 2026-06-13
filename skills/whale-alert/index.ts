@@ -80,8 +80,6 @@ export class WhaleAlertMonitor {
 }
 
 export * from './types/WhaleAlertTypes';
-export { createWhaleAlertMonitor } from './factory';
 
-export function createWhaleAlertMonitor(): WhaleAlertMonitor {
-  return new WhaleAlertMonitor();
-}
+
+export { createWhaleAlertMonitor } from './factory';

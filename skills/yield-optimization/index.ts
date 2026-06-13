@@ -172,8 +172,6 @@ export class YieldOptimizationEngine {
 }
 
 export * from './types/YieldTypes';
-export { createYieldOptimizationEngine } from './factory';
 
-export function createYieldOptimization(config?: YieldConfig): YieldOptimizationEngine {
-  return new YieldOptimizationEngine(config);
-}
+
+export { createYieldOptimizationEngine } from './factory';

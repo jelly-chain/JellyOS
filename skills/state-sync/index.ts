@@ -18,7 +18,3 @@ export class StateSync {
 }
 
 export { createStateSync } from './factory';
-
-export function createStateSync(): StateSync {
-  return new StateSync();
-}

@@ -18,7 +18,3 @@ export class ExpectedShortfall {
 }
 
 export { createExpectedShortfall } from './factory';
-
-export function createExpectedShortfall(): ExpectedShortfall {
-  return new ExpectedShortfall();
-}

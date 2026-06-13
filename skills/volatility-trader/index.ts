@@ -18,7 +18,3 @@ export class VolatilityTrader {
 }
 
 export { createVolatilityTrader } from './factory';
-
-export function createVolatilityTrader(): VolatilityTrader {
-  return new VolatilityTrader();
-}

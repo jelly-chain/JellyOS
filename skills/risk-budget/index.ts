@@ -18,7 +18,3 @@ export class RiskBudget {
 }
 
 export { createRiskBudget } from './factory';
-
-export function createRiskBudget(): RiskBudget {
-  return new RiskBudget();
-}

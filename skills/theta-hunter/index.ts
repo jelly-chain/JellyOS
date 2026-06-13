@@ -18,7 +18,3 @@ export class ThetaHunter {
 }
 
 export { createThetaHunter } from './factory';
-
-export function createThetaHunter(): ThetaHunter {
-  return new ThetaHunter();
-}

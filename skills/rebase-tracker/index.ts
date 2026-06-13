@@ -75,8 +75,6 @@ export class RebaseTracker {
 }
 
 export * from './types/RebaseTypes';
-export { createRebaseTracker } from './factory';
 
-export function createRebaseTracker(): RebaseTracker {
-  return new RebaseTracker();
-}
+
+export { createRebaseTracker } from './factory';

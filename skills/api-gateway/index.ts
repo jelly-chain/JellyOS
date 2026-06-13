@@ -18,7 +18,3 @@ export class ApiGateway {
 }
 
 export { createApiGateway } from './factory';
-
-export function createApiGateway(): ApiGateway {
-  return new ApiGateway();
-}

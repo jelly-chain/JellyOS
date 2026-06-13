@@ -119,8 +119,6 @@ interface PairData {
 }
 
 export * from './types/PairsTypes';
-export { createPairsTrader } from './factory';
 
-export function createPairsTrader(): PairsTrader {
-  return new PairsTrader();
-}
+
+export { createPairsTrader } from './factory';

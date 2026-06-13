@@ -18,7 +18,3 @@ export class MaxDrawdown {
 }
 
 export { createMaxDrawdown } from './factory';
-
-export function createMaxDrawdown(): MaxDrawdown {
-  return new MaxDrawdown();
-}

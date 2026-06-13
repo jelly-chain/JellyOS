@@ -18,7 +18,3 @@ export class ConvexHarvester {
 }
 
 export { createConvexHarvester } from './factory';
-
-export function createConvexHarvester(): ConvexHarvester {
-  return new ConvexHarvester();
-}

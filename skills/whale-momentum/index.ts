@@ -73,8 +73,6 @@ export class WhaleMomentumTracker {
 }
 
 export * from './types/WhaleMomentumTypes';
-export { createWhaleMomentumTracker } from './factory';
 
-export function createWhaleMomentumTracker(): WhaleMomentumTracker {
-  return new WhaleMomentumTracker();
-}
+
+export { createWhaleMomentumTracker } from './factory';

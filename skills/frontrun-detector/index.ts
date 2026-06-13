@@ -18,7 +18,3 @@ export class FrontrunDetector {
 }
 
 export { createFrontrunDetector } from './factory';
-
-export function createFrontrunDetector(): FrontrunDetector {
-  return new FrontrunDetector();
-}

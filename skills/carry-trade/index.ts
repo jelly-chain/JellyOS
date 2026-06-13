@@ -18,7 +18,3 @@ export class CarryTrade {
 }
 
 export { createCarryTrade } from './factory';
-
-export function createCarryTrade(): CarryTrade {
-  return new CarryTrade();
-}

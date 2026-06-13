@@ -118,7 +118,3 @@ export class DCAExecutor {
 
 export * from './types/DCATypes';
 export { createDCAExecutor } from './factory';
-
-export function createDCAExecutor(): DCAExecutor {
-  return new DCAExecutor();
-}

@@ -74,8 +74,6 @@ export class HoneypotScanner {
 }
 
 export * from './types/HoneypotTypes';
-export { createHoneypotScanner } from './factory';
 
-export function createHoneypotScanner(): HoneypotScanner {
-  return new HoneypotScanner();
-}
+
+export { createHoneypotScanner } from './factory';

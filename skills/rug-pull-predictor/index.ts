@@ -58,8 +58,6 @@ export class RugPullPredictor {
 }
 
 export * from './types/RugPullTypes';
-export { createRugPullPredictor } from './factory';
 
-export function createRugPullPredictor(): RugPullPredictor {
-  return new RugPullPredictor();
-}
+
+export { createRugPullPredictor } from './factory';

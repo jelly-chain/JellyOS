@@ -89,8 +89,6 @@ export class MaxPainCalculator {
 }
 
 export * from './types/MaxPainTypes';
-export { createMaxPainCalculator } from './factory';
 
-export function createMaxPainCalculator(): MaxPainCalculator {
-  return new MaxPainCalculator();
-}
+
+export { createMaxPainCalculator } from './factory';

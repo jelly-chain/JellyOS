@@ -18,7 +18,3 @@ export class MomentumDca {
 }
 
 export { createMomentumDca } from './factory';
-
-export function createMomentumDca(): MomentumDca {
-  return new MomentumDca();
-}

@@ -18,7 +18,3 @@ export class SortinoTracker {
 }
 
 export { createSortinoTracker } from './factory';
-
-export function createSortinoTracker(): SortinoTracker {
-  return new SortinoTracker();
-}

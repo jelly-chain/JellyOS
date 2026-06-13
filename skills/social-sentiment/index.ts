@@ -61,8 +61,6 @@ export class SocialSentimentAnalyzer {
 }
 
 export * from './types/SocialSentimentTypes';
-export { createSocialSentimentAnalyzer } from './factory';
 
-export function createSocialSentimentAnalyzer(): SocialSentimentAnalyzer {
-  return new SocialSentimentAnalyzer();
-}
+
+export { createSocialSentimentAnalyzer } from './factory';

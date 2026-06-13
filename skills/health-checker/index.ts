@@ -18,7 +18,3 @@ export class HealthChecker {
 }
 
 export { createHealthChecker } from './factory';
-
-export function createHealthChecker(): HealthChecker {
-  return new HealthChecker();
-}

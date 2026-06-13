@@ -18,7 +18,3 @@ export class PluginManager {
 }
 
 export { createPluginManager } from './factory';
-
-export function createPluginManager(): PluginManager {
-  return new PluginManager();
-}

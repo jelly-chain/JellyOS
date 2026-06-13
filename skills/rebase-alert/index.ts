@@ -82,8 +82,6 @@ export class RebaseAlert {
 }
 
 export * from './types/RebaseAlertTypes';
-export { createRebaseAlert } from './factory';
 
-export function createRebaseAlert(): RebaseAlert {
-  return new RebaseAlert();
-}
+
+export { createRebaseAlert } from './factory';

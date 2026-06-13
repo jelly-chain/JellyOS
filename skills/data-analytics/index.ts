@@ -82,12 +82,8 @@ export class DataAnalyticsEngine {
 }
 
 export * from './types/DataAnalyticsTypes';
-export { createDataAnalyticsEngine } from './factory';
 
-export function createDataAnalytics(config?: DataAnalyticsConfig): DataAnalyticsEngine {
-  return new DataAnalyticsEngine(config);
-}
 
 function createDataAnalyticsEngine(config?: DataAnalyticsConfig): DataAnalyticsEngine {
-  return new DataAnalyticsEngine(config);
-}
+
+export { createDataAnalyticsEngine } from './factory';

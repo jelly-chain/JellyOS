@@ -113,8 +113,6 @@ export class StakingDashboard {
 }
 
 export * from './types/StakingTypes';
-export { createStakingDashboard } from './factory';
 
-export function createStakingDashboard(): StakingDashboard {
-  return new StakingDashboard();
-}
+
+export { createStakingDashboard } from './factory';

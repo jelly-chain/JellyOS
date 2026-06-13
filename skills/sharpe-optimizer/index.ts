@@ -18,7 +18,3 @@ export class SharpeOptimizer {
 }
 
 export { createSharpeOptimizer } from './factory';
-
-export function createSharpeOptimizer(): SharpeOptimizer {
-  return new SharpeOptimizer();
-}

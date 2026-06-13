@@ -18,7 +18,3 @@ export class SandwichTracker {
 }
 
 export { createSandwichTracker } from './factory';
-
-export function createSandwichTracker(): SandwichTracker {
-  return new SandwichTracker();
-}

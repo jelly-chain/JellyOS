@@ -18,7 +18,3 @@ export class AirdropHunter {
 }
 
 export { createAirdropHunter } from './factory';
-
-export function createAirdropHunter(): AirdropHunter {
-  return new AirdropHunter();
-}

@@ -69,8 +69,6 @@ export class CrossChainBridgeMonitor {
 }
 
 export * from './types/BridgeMonitorTypes';
-export { createBridgeMonitor } from './factory';
 
-export function createBridgeMonitor(): CrossChainBridgeMonitor {
-  return new CrossChainBridgeMonitor();
-}
+
+export { createCrossChainBridgeMonitor } from './factory';

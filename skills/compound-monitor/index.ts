@@ -18,7 +18,3 @@ export class CompoundMonitor {
 }
 
 export { createCompoundMonitor } from './factory';
-
-export function createCompoundMonitor(): CompoundMonitor {
-  return new CompoundMonitor();
-}

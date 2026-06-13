@@ -42,8 +42,6 @@ export class ComplianceReporter {
 }
 
 export * from './types/ComplianceTypes';
-export { createComplianceReporter } from './factory';
 
-export function createComplianceReporter(): ComplianceReporter {
-  return new ComplianceReporter();
-}
+
+export { createComplianceReporter } from './factory';

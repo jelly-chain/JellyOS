@@ -18,7 +18,3 @@ export class RewardHarvester {
 }
 
 export { createRewardHarvester } from './factory';
-
-export function createRewardHarvester(): RewardHarvester {
-  return new RewardHarvester();
-}

@@ -85,8 +85,6 @@ export class OptionsFlowTracker {
 }
 
 export * from './types/OptionsFlowTypes';
-export { createOptionsFlowTracker } from './factory';
 
-export function createOptionsFlowTracker(): OptionsFlowTracker {
-  return new OptionsFlowTracker();
-}
+
+export { createOptionsFlowTracker } from './factory';

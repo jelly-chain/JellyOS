@@ -18,7 +18,3 @@ export class BalancerStrategy {
 }
 
 export { createBalancerStrategy } from './factory';
-
-export function createBalancerStrategy(): BalancerStrategy {
-  return new BalancerStrategy();
-}

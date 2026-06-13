@@ -61,8 +61,6 @@ export class MempoolSentry {
 }
 
 export * from './types/MempoolTypes';
-export { createMempoolSentry } from './factory';
 
-export function createMempoolSentry(): MempoolSentry {
-  return new MempoolSentry();
-}
+
+export { createMempoolSentry } from './factory';

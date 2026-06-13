@@ -18,7 +18,3 @@ export class ValueAtRisk {
 }
 
 export { createValueAtRisk } from './factory';
-
-export function createValueAtRisk(): ValueAtRisk {
-  return new ValueAtRisk();
-}

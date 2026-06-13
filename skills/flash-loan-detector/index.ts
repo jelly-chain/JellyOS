@@ -67,8 +67,6 @@ export class FlashLoanDetector {
 }
 
 export * from './types/FlashLoanTypes';
-export { createFlashLoanDetector } from './factory';
 
-export function createFlashLoanDetector(): FlashLoanDetector {
-  return new FlashLoanDetector();
-}
+
+export { createFlashLoanDetector } from './factory';

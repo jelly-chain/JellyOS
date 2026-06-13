@@ -58,8 +58,6 @@ export class SandwichAttackDetector {
 }
 
 export * from './types/SandwichTypes';
-export { createSandwichDetector } from './factory';
 
-export function createSandwichDetector(): SandwichAttackDetector {
-  return new SandwichAttackDetector();
-}
+
+export { createSandwichAttackDetector } from './factory';

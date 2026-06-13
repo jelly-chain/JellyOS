@@ -18,7 +18,3 @@ export class StatisticalArbitrage {
 }
 
 export { createStatisticalArbitrage } from './factory';
-
-export function createStatisticalArbitrage(): StatisticalArbitrage {
-  return new StatisticalArbitrage();
-}

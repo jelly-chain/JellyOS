@@ -18,7 +18,3 @@ export class TrendFader {
 }
 
 export { createTrendFader } from './factory';
-
-export function createTrendFader(): TrendFader {
-  return new TrendFader();
-}

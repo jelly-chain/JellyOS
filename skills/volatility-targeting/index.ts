@@ -50,8 +50,6 @@ export class VolatilityTargeting {
 }
 
 export * from './types/VolTargetingTypes';
-export { createVolatilityTargeting } from './factory';
 
-export function createVolatilityTargeting(): VolatilityTargeting {
-  return new VolatilityTargeting();
-}
+
+export { createVolatilityTargeting } from './factory';

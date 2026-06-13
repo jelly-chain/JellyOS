@@ -18,7 +18,3 @@ export class RugGuard {
 }
 
 export { createRugGuard } from './factory';
-
-export function createRugGuard(): RugGuard {
-  return new RugGuard();
-}

@@ -18,7 +18,3 @@ export class DrawdownMonitor {
 }
 
 export { createDrawdownMonitor } from './factory';
-
-export function createDrawdownMonitor(): DrawdownMonitor {
-  return new DrawdownMonitor();
-}

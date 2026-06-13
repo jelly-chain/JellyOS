@@ -18,7 +18,3 @@ export class AavePosition {
 }
 
 export { createAavePosition } from './factory';
-
-export function createAavePosition(): AavePosition {
-  return new AavePosition();
-}

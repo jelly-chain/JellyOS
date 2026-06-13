@@ -65,11 +65,7 @@ export class DCAPlanner {
 }
 
 export * from './types/DCAPlanTypes';
-export { createDCAPlanner } from './factory';
 
-export function createDCAPlanner(): DCAPlanner {
-  return new DCAPlanner();
-}
 
 interface PriceTarget {
   date: number;
@@ -77,3 +73,5 @@ interface PriceTarget {
   volatility: number;
   confidence: number;
 }
+
+export { createDCAPlanner } from './factory';

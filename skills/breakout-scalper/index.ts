@@ -18,7 +18,3 @@ export class BreakoutScalper {
 }
 
 export { createBreakoutScalper } from './factory';
-
-export function createBreakoutScalper(): BreakoutScalper {
-  return new BreakoutScalper();
-}

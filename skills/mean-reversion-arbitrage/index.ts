@@ -18,7 +18,3 @@ export class MeanReversionArbitrage {
 }
 
 export { createMeanReversionArbitrage } from './factory';
-
-export function createMeanReversionArbitrage(): MeanReversionArbitrage {
-  return new MeanReversionArbitrage();
-}

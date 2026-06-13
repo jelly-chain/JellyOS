@@ -18,7 +18,3 @@ export class CalmarCalculator {
 }
 
 export { createCalmarCalculator } from './factory';
-
-export function createCalmarCalculator(): CalmarCalculator {
-  return new CalmarCalculator();
-}

@@ -42,8 +42,6 @@ export class PortfolioHedge {
 }
 
 export * from './types/HedgeTypes';
-export { createPortfolioHedge } from './factory';
 
-export function createPortfolioHedge(): PortfolioHedge {
-  return new PortfolioHedge();
-}
+
+export { createPortfolioHedge } from './factory';

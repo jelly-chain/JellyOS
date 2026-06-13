@@ -67,8 +67,6 @@ export class SyntheticAssetWatch {
 }
 
 export * from './types/SyntheticAssetTypes';
-export { createSyntheticAssetWatch } from './factory';
 
-export function createSyntheticAssetWatch(): SyntheticAssetWatch {
-  return new SyntheticAssetWatch();
-}
+
+export { createSyntheticAssetWatch } from './factory';

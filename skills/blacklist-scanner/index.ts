@@ -54,8 +54,6 @@ export class BlacklistScanner {
 }
 
 export * from './types/BlacklistTypes';
-export { createBlacklistScanner } from './factory';
 
-export function createBlacklistScanner(): BlacklistScanner {
-  return new BlacklistScanner();
-}
+
+export { createBlacklistScanner } from './factory';

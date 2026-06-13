@@ -18,7 +18,3 @@ export class CurveArbitrage {
 }
 
 export { createCurveArbitrage } from './factory';
-
-export function createCurveArbitrage(): CurveArbitrage {
-  return new CurveArbitrage();
-}

@@ -62,8 +62,6 @@ export class TokenUnlockTracker {
 }
 
 export * from './types/TokenUnlockTypes';
-export { createTokenUnlockTracker } from './factory';
 
-export function createTokenUnlockTracker(): TokenUnlockTracker {
-  return new TokenUnlockTracker();
-}
+
+export { createTokenUnlockTracker } from './factory';

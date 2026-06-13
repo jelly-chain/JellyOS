@@ -18,7 +18,3 @@ export class BackrunExtractor {
 }
 
 export { createBackrunExtractor } from './factory';
-
-export function createBackrunExtractor(): BackrunExtractor {
-  return new BackrunExtractor();
-}

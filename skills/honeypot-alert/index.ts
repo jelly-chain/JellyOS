@@ -18,7 +18,3 @@ export class HoneypotAlert {
 }
 
 export { createHoneypotAlert } from './factory';
-
-export function createHoneypotAlert(): HoneypotAlert {
-  return new HoneypotAlert();
-}

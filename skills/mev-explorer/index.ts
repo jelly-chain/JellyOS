@@ -18,7 +18,3 @@ export class MevExplorer {
 }
 
 export { createMevExplorer } from './factory';
-
-export function createMevExplorer(): MevExplorer {
-  return new MevExplorer();
-}

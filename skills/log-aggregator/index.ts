@@ -18,7 +18,3 @@ export class LogAggregator {
 }
 
 export { createLogAggregator } from './factory';
-
-export function createLogAggregator(): LogAggregator {
-  return new LogAggregator();
-}

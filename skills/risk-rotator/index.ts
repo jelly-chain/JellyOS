@@ -82,8 +82,6 @@ export class RiskRotator {
 }
 
 export * from './types/RiskRotatorTypes';
-export { createRiskRotator } from './factory';
 
-export function createRiskRotator(): RiskRotator {
-  return new RiskRotator();
-}
+
+export { createRiskRotator } from './factory';

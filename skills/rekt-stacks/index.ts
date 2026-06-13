@@ -48,8 +48,6 @@ export class RektStacks {
 }
 
 export * from './types/RektTypes';
-export { createRektStacks } from './factory';
 
-export function createRektStacks(): RektStacks {
-  return new RektStacks();
-}
+
+export { createRektStacks } from './factory';

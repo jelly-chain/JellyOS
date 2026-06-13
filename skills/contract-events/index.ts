@@ -51,8 +51,6 @@ export class ContractEventMonitor {
 }
 
 export * from './types/ContractEventTypes';
-export { createContractEventMonitor } from './factory';
 
-export function createContractEventMonitor(): ContractEventMonitor {
-  return new ContractEventMonitor();
-}
+
+export { createContractEventMonitor } from './factory';

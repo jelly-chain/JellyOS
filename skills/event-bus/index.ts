@@ -18,7 +18,3 @@ export class EventBus {
 }
 
 export { createEventBus } from './factory';
-
-export function createEventBus(): EventBus {
-  return new EventBus();
-}

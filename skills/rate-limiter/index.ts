@@ -18,7 +18,3 @@ export class RateLimiter {
 }
 
 export { createRateLimiter } from './factory';
-
-export function createRateLimiter(): RateLimiter {
-  return new RateLimiter();
-}

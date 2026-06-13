@@ -18,7 +18,3 @@ export class CacheManager {
 }
 
 export { createCacheManager } from './factory';
-
-export function createCacheManager(): CacheManager {
-  return new CacheManager();
-}

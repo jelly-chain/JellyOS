@@ -60,8 +60,6 @@ export class SniperBot {
 }
 
 export * from './types/SniperTypes';
-export { createSniperBot } from './factory';
 
-export function createSniperBot(): SniperBot {
-  return new SniperBot();
-}
+
+export { createSniperBot } from './factory';

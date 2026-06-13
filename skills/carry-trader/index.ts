@@ -109,8 +109,6 @@ export class CarryTrader {
 }
 
 export * from './types/CarryTypes';
-export { createCarryTrader } from './factory';
 
-export function createCarryTrader(): CarryTrader {
-  return new CarryTrader();
-}
+
+export { createCarryTrader } from './factory';
