@@ -27,7 +27,11 @@
     "dev": "tsx src/cli.ts",
     "start": "node dist/cli.js",
     "type-check": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "lint": "eslint src/ skills/ extensions/ --ext .ts,.mts",
+    "lint:fix": "eslint src/ skills/ extensions/ --ext .ts,.mts --fix",
+    "format": "prettier --write \"src/**/*.ts\" \"skills/**/*.ts\" \"extensions/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.ts\" \"skills/**/*.ts\" \"extensions/**/*.ts\""
   },
   "dependencies": {
     "@sinclair/typebox": "^0.32.0",
