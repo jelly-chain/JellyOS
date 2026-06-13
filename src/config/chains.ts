@@ -5,7 +5,7 @@
  */
 
 export interface ChainConfig {
-  name: string;
+  name?: string;
   networkId?: string;
   symbol: string;
   rpcPattern?: string; // For Alchemy-style RPC URLs

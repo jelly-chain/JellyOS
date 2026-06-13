@@ -283,8 +283,6 @@ export class WalletManager {
     }
   }
 
-  // ── CRUD ─────────────────────────────────────────────────────────────────
-
   generateAll(): Promise<void> {
     if (!this.passphrase) {
       throw new Error('Passphrase required - call setPassphrase() first');
@@ -296,7 +294,7 @@ export class WalletManager {
     ]).then(() => {});
   }
 
-  create(chain: string, passphrase?: string): Promise<WalletInfo> {
+  async create(chain: string, passphrase?: string): Promise<WalletInfo> {
     if (!this.passphrase && !passphrase) {
       throw new Error('Call setPassphrase() before create(), or pass passphrase as argument.');
     }
@@ -322,7 +320,8 @@ export class WalletManager {
       createdAt: wallet.createdAt,
     });
     // Encrypt and write the full wallet (with private key) to disk
-    return this.saveEncrypted(wallet, pw);
+    await this.saveEncrypted(wallet, pw);
+    return wallet;
   }
 
   private async saveEncrypted(wallet: WalletInfo, passphrase: string): Promise<void> {
