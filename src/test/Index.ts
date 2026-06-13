@@ -1,7 +1,11 @@
+// Test exports
 export { TestHelpers } from './utils/TestHelpers';
 
 export async function runTests(): Promise<void> {
-  console.log('JellyOS Test Suite');
-  console.log('==================');
-  console.log('\nAll tests passed.');
+  const { execSync } = require('node:child_process');
+  try {
+    execSync('npx vitest run', { stdio: 'inherit' });
+  } catch {
+    console.log('Some tests failed - check output above');
+  }
 }
