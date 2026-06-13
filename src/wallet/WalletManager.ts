@@ -285,13 +285,18 @@ export class WalletManager {
 
   // ── CRUD ─────────────────────────────────────────────────────────────────
 
-  generateAll(): void {
-    if (!this.wallets.has('evm')) this.create('evm');
-    if (!this.wallets.has('solana')) this.create('solana');
-    if (!this.wallets.has('cosmos')) this.create('cosmos');
+  generateAll(): Promise<void> {
+    if (!this.passphrase) {
+      throw new Error('Passphrase required - call setPassphrase() first');
+    }
+    return Promise.all([
+      this.create('evm', this.passphrase),
+      this.create('solana', this.passphrase),
+      this.create('cosmos', this.passphrase),
+    ]).then(() => {});
   }
 
-  create(chain: string, passphrase?: string): WalletInfo {
+  create(chain: string, passphrase?: string): Promise<WalletInfo> {
     if (!this.passphrase && !passphrase) {
       throw new Error('Call setPassphrase() before create(), or pass passphrase as argument.');
     }
@@ -317,8 +322,7 @@ export class WalletManager {
       createdAt: wallet.createdAt,
     });
     // Encrypt and write the full wallet (with private key) to disk
-    this.saveEncrypted(wallet, pw);
-    return wallet;
+    return this.saveEncrypted(wallet, pw);
   }
 
   private async saveEncrypted(wallet: WalletInfo, passphrase: string): Promise<void> {

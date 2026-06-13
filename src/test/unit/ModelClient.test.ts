@@ -5,9 +5,15 @@ import type { ModelRegistry } from '../../models/ModelRegistry';
 describe('ModelClient', () => {
   describe('resolveModelChain', () => {
     it('returns chain from user models', () => {
-      const chain = resolveModelChain(undefined);
-      // Without registry, should throw without env
-      expect(chain).toEqual([]);
+      const original = process.env.OPENROUTER_API_KEY;
+      process.env.OPENROUTER_API_KEY = '';
+      try {
+        // Will throw because no API keys set
+        expect(() => resolveModelChain(undefined)).toThrow('No API key found');
+      } finally {
+        if (original) process.env.OPENROUTER_API_KEY = original;
+        else delete process.env.OPENROUTER_API_KEY;
+      }
     });
 
     it('handles empty user models', () => {
@@ -18,6 +24,7 @@ describe('ModelClient', () => {
         expect(() => resolveModelChain(undefined)).toThrow('No API key found');
       } finally {
         if (original) process.env.OPENROUTER_API_KEY = original;
+        else delete process.env.OPENROUTER_API_KEY;
       }
     });
   });
