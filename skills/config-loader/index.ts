@@ -17,8 +17,5 @@ export class ConfigLoader {
   close(): void {}
 }
 
+export * from './types/ConfigLoaderTypes';
 export { createConfigLoader } from './factory';
-
-export function createConfigLoader(): ConfigLoader {
-  return new ConfigLoader();
-}
