@@ -40,7 +40,7 @@ export class DCAPlanner {
    * Compare lump sum vs DCA historically
    */
   async compare(symbol: string, amount: number, periodDays: number): Promise<DCAComparison> {
-    const lumpSumReturn = this.simulateLumpSum(symbol, amount, periodDays);
+    const lumpReturn = this.simulateLumpSum(symbol, amount, periodDays);
     const dcaReturn = this.simulateDCA(symbol, amount, periodDays, 'weekly');
 
     return {
@@ -100,8 +100,3 @@ export class DCAPlanner {
 }
 
 export * from './types/DCAPlannerTypes';
-export { createDCAPlanner } from './factory';
-
-export function createDCAPlanner(): DCAPlanner {
-  return new DCAPlanner();
-}
