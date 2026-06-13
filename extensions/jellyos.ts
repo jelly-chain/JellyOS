@@ -106,9 +106,19 @@ function broadcastWs(event: string, data: unknown): void {
 }
 
 const dashPort   = parseInt(process.env.JELLY_DASHBOARD_PORT ?? "4320", 10);
-const dashServer = new WebSocketServer({ port: dashPort, host: "127.0.0.1" });
+const dashboardToken = process.env.JELLY_DASHBOARD_TOKEN;
 
-dashServer.on("connection", (ws: WebSocket) => {
+dashServer.on("connection", (ws: WebSocket, request: any) => {
+  // Require token authentication if JELLY_DASHBOARD_TOKEN is set
+  const url = request?.url ?? "";
+  const params = new URLSearchParams(url.includes("?") ? url.slice(url.indexOf("?")) : "");
+  const token = params.get("token") ?? "";
+  
+  if (dashboardToken && token !== dashboardToken) {
+    ws.close(1008, "Authentication required"); // 1008 = Policy Violation
+    return;
+  }
+  
   wsClients.add(ws);
   ws.send(JSON.stringify({ type: "connected", timestamp: Date.now() }));
   ws.on("close", () => wsClients.delete(ws));
