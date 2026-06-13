@@ -5,7 +5,7 @@
  * Author: BSC Team
  */
 
-import { readdirSync, statSync, existsSync } from 'node:fs';
+import { readdirSync, statSync, existsSync, readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -34,10 +34,10 @@ function checkSkill(skillPath: string, skillName: string): SkillCheck {
   // Check for duplicate exports
   const indexPath = join(skillPath, 'index.ts');
   if (existsSync(indexPath)) {
-    const content = require('node:fs').readFileSync(indexPath, 'utf-8');
+    const content = readFileSync(indexPath, 'utf-8');
     const hasInlineCreate = /export function create\w+/.test(content);
     const hasFactoryExport = /export.*from.*factory/.test(content);
-    
+
     if (hasInlineCreate && hasFactoryExport) {
       errors.push('Duplicate create export (inline + factory)');
     }
@@ -53,7 +53,7 @@ function checkSkill(skillPath: string, skillName: string): SkillCheck {
 
 function main() {
   console.log('🔍 Checking skill structure...\n');
-  
+
   const skills = readdirSync(skillsDir);
   const results: SkillCheck[] = [];
 
@@ -86,7 +86,7 @@ function main() {
   console.log(`\nTotal: ${results.length} skills checked`);
   const errorCount = results.filter(r => r.errors.length > 0).length;
   console.log(`Errors: ${errorCount}`);
-  
+
   process.exit(hasErrors ? 1 : 0);
 }
 
