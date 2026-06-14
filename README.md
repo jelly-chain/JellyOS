@@ -35,22 +35,60 @@ All data stays on your machine. No cloud. No server. No exposure.
 ## Quick Start
 
 ```bash
+npm install -g @jellyos/agent
+jellyos setup
+```
+
+That's it. The setup wizard configures your API keys and generates wallets. When it finishes:
+
+```bash
+jellyos              # Interactive TUI
+jellyos telegram     # Telegram bot mode
+jellyos --headless "what is BTC price?"  # One-shot query
+```
+
+---
+
+## Installing from Source
+
+```bash
 git clone https://github.com/jelly-chain/JellyOS.git
 cd JellyOS
 bash setup.sh
 ```
 
-That's it. `setup.sh` installs dependencies, compiles the extension, walks you through your API keys, and generates your wallets. When it finishes:
-
-```bash
-jelly
-```
-
-Both `jelly` and `jellyos` work — same binary.
+Then run `jellyos` from within the project directory.
 
 **Windows:**
 ```powershell
 powershell -ExecutionPolicy Bypass -File setup.ps1
+```
+
+---
+
+## Project Structure
+
+```
+JellyOS/
+├── bin/
+│   ├── jellyos                 # Main launcher
+│   └── irys-uploader-server.js # Permanent storage microservice
+├── src/
+│   ├── cli.ts                  # CLI entry (setup, config, telegram)
+│   ├── services/irys.ts        # Irys client for Arweave storage
+│   ├── vector/store.ts         # Vector store for RAG
+│   ├── skills/                 # Skill modules
+│   │   └── telegram/           # Telegram bot skill
+│   ├── blockchain/             # Chain integrations
+│   ├── trading/                # Trade execution
+│   └── vault/                  # AES-256-GCM vault
+├── skills/                     # Standalone skill modules
+│   ├── telegram/               # Permanent memory skill
+│   ├── trading/                # 30+ trading skills
+│   └── analytics/              # Market analysis skills
+├── .env.example                # All configuration variables
+├── setup.sh                    # Setup wizard
+└── docs/deployment.md          # Cloud deployment guides
 ```
 
 ---
@@ -182,9 +220,12 @@ Setup writes to `~/.jelly/.env`. You can edit it directly or run `jellyos config
 | `ALCHEMY_KEY` | No | On-chain data across 16 EVM chains |
 | `COINGECKO_API_KEY` | No | Higher rate limits for price data |
 | `POLYMARKET_API_KEY` | No | Prediction market trading |
-| `DEFAULT_MODEL` | No | Active model ID (set via `/model`) |
+| `TELEGRAM_BOT_TOKEN` | No | Telegram bot token (optional) |
+| `IRYS_PRIVATE_KEY` | No | Irys storage signing key |
+| `BOT_ADMIN_IDS` | No | Comma-separated admin UIDs |
+| `DEFAULT_MODEL` | No | Active model ID |
 | `AUTO_VAULT_THRESHOLD` | No | Auto-sweep at this USD P&L (default: 500) |
-| `JELLY_DASHBOARD_PORT` | No | WebSocket port for dashboard (default: 4320) |
+| `JELLY_DASHBOARD_PORT` | No | Dashboard WebSocket port (default: 4320) |
 
 ---
 
