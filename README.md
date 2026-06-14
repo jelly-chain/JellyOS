@@ -223,6 +223,32 @@ Live events: prices, signals, trades, vault sweeps, whale alerts, agent activity
 
 ---
 
+## Telegram Bot
+
+JellyOS runs as a Telegram bot with permanent storage on Irys:
+
+```bash
+jellyos telegram
+```
+
+Users can interact via Telegram:
+- `/contribute` - Submit contributions for points
+- `/status` - View points and rank
+- `/rank` - Leaderboard
+- `/verify` - Link EVM wallet via nonce signature
+- `/memory` - List your contributions
+
+All data is stored permanently on Arweave via Irys.
+
+Configure `.env`:
+```env
+TELEGRAM_BOT_TOKEN=          # Bot token from @BotFather
+IRYS_PRIVATE_KEY=            # For permanent storage
+BOT_ADMIN_IDS=               # Comma-separated admin UIDs
+```
+
+---
+
 ## License
 
 MIT — see [LICENSE](LICENSE)
