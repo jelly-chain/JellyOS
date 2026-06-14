@@ -1,6 +1,5 @@
-// Wallet Verification - EVM nonce-based challenge
-import { createHash, randomBytes } from "node:crypto";
-import { recoverPersonalSignature } from "eth-sig-util";
+// Wallet Verification - EVM nonce-based
+import { randomBytes, createHash } from "node:crypto";
 
 export interface Challenge {
   message: string;
@@ -9,27 +8,12 @@ export interface Challenge {
 }
 
 export function generateChallenge(): Challenge {
-  const nonce = randomBytes(8).toString("hex");
+  const nonce = randomBytes(16).toString("hex");
   const issuedAt = Date.now();
-  const message = `JellyOS Verifying
+  const message = `JellyOS Verification
 Nonce: ${nonce}
-Issued At: ${new Date(issuedAt).toISOString()}
+Issued: ${new Date(issuedAt).toISOString()}
 
-This signature proves ownership without moving funds.`;
+No funds moved. Signature proves ownership.`;
   return { message, nonce, issuedAt };
-}
-
-export interface VerifyResult {
-  success: boolean;
-  address?: string;
-  error?: string;
-}
-
-export function verifySignature(message: string, signature: string): VerifyResult {
-  try {
-    const address = recoverPersonalSignature({ data: message, signature });
-    return { success: true, address };
-  } catch {
-    return { success: false, error: "Invalid signature" };
-  }
 }

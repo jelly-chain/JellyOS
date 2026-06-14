@@ -2,9 +2,8 @@
 import { Telegraf } from "telegraf";
 import type { Context } from "telegraf";
 import { irys } from "../../services/irys.js";
-import type { IrysTag, IrysUploadResult } from "../../services/irys.js";
 import { getRankFromPoints, calculatePoints } from "./rank.js";
-import type { UserProfile } from "./types.js";
+import type { UserProfile, RankTier } from "./types.js";
 
 const JELLY_HOME = process.env.JELLYOS_HOME || require("node:path").join(require("node:os").homedir(), ".jelly");
 const envPath = `${JELLY_HOME}/.env`;
@@ -65,39 +64,102 @@ export class TelegramSkill {
   }
 
   private registerHandlers(): void {
+    // /start
     this.bot.start(async (ctx) => {
-      const uidHash = hashUid(ctx.from.id);
       const lang = ctx.from.language_code || "en";
-      await ctx.reply(`Welcome to JellyOS! Language: ${lang}`);
+      await ctx.reply(`🪼 JellyOS Bot\nLanguage: ${lang}\nSend /help for commands`);
     });
 
+    // /help
     this.bot.help(async (ctx) => {
-      await ctx.reply(`/contribute - Submit contribution\n/status - View points\n/rank - Leaderboard`);
+      await ctx.reply(`Commands:
+/contribute - Submit contribution  
+/status   - View points + rank
+/rank     - Leaderboard
+/memory   - Your contributions
+/verify   - EVM wallet verification
+/language - Change language`);
     });
 
+    // /contribute - just tell user to send text
+    this.bot.command("contribute", async (ctx) => {
+      await ctx.reply("Send your contribution (min 20 chars):");
+    });
+
+    // /rank - Leaderboard
+    this.bot.command("rank", async (ctx) => {
+      await ctx.reply("🏆 Top 10:\n(coming soon)");
+    });
+
+    // /memory
+    this.bot.command("memory", async (ctx) => {
+      await ctx.reply("📝 Your contributions:\n(coming soon)");
+    });
+
+    // /verify - EVM wallet
+    this.bot.command("verify", async (ctx) => {
+      const { generateChallenge } = await import("./wallet-verify.js");
+      const challenge = generateChallenge();
+      await ctx.reply(`Verify EVM wallet:\n${challenge.message}`);
+    });
+
+    // /language
+    this.bot.command("language", async (ctx) => {
+      await ctx.reply("Select language:", {
+        reply_markup: {
+          inline_keyboard: [
+            [{ text: "🇪🇸 ES", callback_data: "lang_es" }],
+            [{ text: "🇬🇧 EN", callback_data: "lang_en" }],
+            [{ text: "🇨🇳 CN", callback_data: "lang_cn" }],
+            [{ text: "🇮🇳 IN", callback_data: "lang_hi" }],
+          ],
+        } as any,
+      });
+    });
+
+    // Text handler for contributions
     this.bot.on("text", async (ctx) => {
       const text = ctx.message.text;
       if (text.length >= 20 && !text.startsWith("/")) {
         await this.handleContribution(ctx, text);
       }
     });
+
+    // /status
+    this.bot.command("status", async (ctx) => {
+      const profile: UserProfile = {
+        points: 0,
+        rank: "Seedling",
+        language: ctx.from.language_code || "en",
+        trustScore: 5.0,
+        dailyAportesCount: 0,
+        contributionCount: 0,
+        totalUsesCount: 0,
+        lastSeenTs: Date.now(),
+      };
+      const rank: RankTier = getRankFromPoints(profile.points);
+      await ctx.reply(`Points: ${profile.points}
+Rank: ${rank.emoji} ${rank.name}
+Daily: ${profile.dailyAportesCount}/${rank.dailyLimit}`);
+    });
   }
 
   private async handleContribution(ctx: Context, text: string): Promise<void> {
     const score = Math.random() * 10;
     const points = calculatePoints(score);
-    const tags: IrysTag[] = [
+    const tags = [
       { name: "App-Name", value: "JellyOS" },
       { name: "data-type", value: "contribution" },
       { name: "quality-score", value: score.toFixed(2) },
       { name: "points", value: String(points) },
+      { name: "Content-Type", value: "text/plain" },
     ];
     try {
-      const result: IrysUploadResult = await irys.upload(Buffer.from(text), tags);
-      await ctx.reply(`Saved! CID: ${result.id}`);
+      const result = await irys.upload(Buffer.from(text), tags);
+      await ctx.reply(`✅ Saved! CID: https://gateway.irys.xyz/${result.id}`);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
-      await ctx.reply(`Failed: ${msg}`);
+      await ctx.reply(`❌ Failed: ${msg}`);
     }
   }
 }
