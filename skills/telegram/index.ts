@@ -6,7 +6,7 @@ import type { IrysTag, IrysUploadResult } from "../../services/irys.js";
 import { getRankFromPoints, calculatePoints } from "./rank.js";
 import type { UserProfile } from "./types.js";
 
-const JELLY_HOME = process.env.JELLYOS_HOME || "/Users/tj/.jelly";
+const JELLY_HOME = process.env.JELLYOS_HOME || require("node:path").join(require("node:os").homedir(), ".jelly");
 const envPath = `${JELLY_HOME}/.env`;
 
 // Hash Telegram UID for privacy
@@ -72,7 +72,7 @@ export class TelegramSkill {
     });
 
     this.bot.help(async (ctx) => {
-      await ctx.reply(`/contribute - Submit a contribution\n/status - View points + rank`);
+      await ctx.reply(`/contribute - Submit contribution\n/status - View points\n/rank - Leaderboard`);
     });
 
     this.bot.on("text", async (ctx) => {
