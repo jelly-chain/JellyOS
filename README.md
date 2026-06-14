@@ -17,6 +17,8 @@
 
 [Website](http://jelly-os.xyz) · [Telegram](https://t.me/jellyxchain) · [X / Twitter](https://x.com/agentz010)
 
+BSC Agent: 0x14314ca85153a5290f607d5e5e2c2df515dc7777
+
 
 </div>
 
